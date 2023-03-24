@@ -5553,9 +5553,9 @@ solidity-coverage@^0.7.21:
     shelljs "^0.8.3"
     web3-utils "^1.3.0"
 
-"soul-wallet-lib@github:proofofsoulprotocol/soulwalletlib#v0.1.0-alpha.25":
+"soul-wallet-lib@github:proofofsoulprotocol/soulwalletlib#v0.1.0-alpha.signaturetest.01":
   version "v0.1.0-alpha.25"
-  resolved "git+ssh://git@github.com/proofofsoulprotocol/soulwalletlib.git#fbcf3bb0d7955bdedc3e9f7c21521b8c40f996f7"
+  resolved "git+ssh://git@github.com/proofofsoulprotocol/soulwalletlib.git#ca19a70db1ea2c2375ec42339980de02588753aa"
   dependencies:
     dotenv "8.6.0"
     ethereumjs-util "^7.1.5"

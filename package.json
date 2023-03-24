@@ -36,7 +36,7 @@
     "hardhat-gas-reporter": "^1.0.8",
     "ow": "^0.28.1",
     "preprocess": "^3.2.0",
-    "soul-wallet-lib": "github:proofofsoulprotocol/soulwalletlib#v0.1.0-alpha.25",
+    "soul-wallet-lib": "github:proofofsoulprotocol/soulwalletlib#v0.1.0-alpha.signaturetest.01",
     "soulwallet-contract": "file:../soul-wallet-contract"
   },
   "devDependencies": {
