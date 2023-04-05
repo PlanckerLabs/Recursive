@@ -27,3 +27,9 @@ soul-wallet-lib用这个版本v0.1.0-alpha.signaturetest.01
 ethers使用5.7.2
 
 服务器的bundler服务启动脚本放在/home/ubuntu/plancker/bundler/launcher目录下，启动命令：./bundler-polygon-mumbai.sh start|stop|restart
+
+如果服务器上开启了对应链的bundler服务，可以通过下面的url进行访问
+http://bundler-arb-main.plancker.org/rpc
+http://bundler-pol-main.plancker.org/rpc
+http://bundler-opt-main.plancker.org/rpc
+http://bundler-pol-mumbai.plancker.org/rpc
