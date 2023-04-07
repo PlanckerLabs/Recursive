@@ -22,7 +22,7 @@ packages\bundler\src\BundlerServer.ts 77行 if里要加一个“err?.errorName &
 
 test目录的脚本放到soul-wallet-contract的test目录下进行测试，比如：npx hardhat test ./test/test-polygon-mumbai.ts
 
-soul-wallet-lib用这个版本v0.1.0-alpha.signaturetest.01
+soul-wallet-lib用这个版本v0.1.0-alpha.32
 
 ethers使用5.7.2
 

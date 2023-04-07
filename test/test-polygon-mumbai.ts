@@ -1,7 +1,7 @@
 import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { Wallet, ethers } from "ethers";
-import { Bundler, SoulWalletLib, IUserOpReceipt } from 'soul-wallet-lib';
-import { NumberLike } from "soul-wallet-lib/dist/defines/numberLike";
+import { Bundler, SoulWalletLib, IUserOpReceipt, UserOperation } from 'soul-wallet-lib';
+import { NumberLike, toNumber } from "soul-wallet-lib/dist/defines/numberLike";
 import { Utils } from "./Utils";
 
 
@@ -15,7 +15,7 @@ const walletAddress1 = "0x37Bb350b9bD47D5354dC4d6d6E7227BCCe0F4474"
 const walletFactoryAddressHas ="0xC544A5107d887c9df046Cd8C5fB9D61e7559c229"
 
 const provider = new ethers.providers.JsonRpcProvider("https://polygon-mumbai.g.alchemy.com/v2/MD-3rBtr93tbYyDY518rqsBGupOGuvOV")
-const walletOwner = Wallet.fromMnemonic("xxxxxxxxxxxxxxxxxxxxxxxxxx").connect(provider)
+const walletOwner = Wallet.fromMnemonic("silent sign razor move sunset grass worth loop token various medal cool").connect(provider)
         
 const accounts = [walletAddress0, walletAddress1]
 
@@ -26,6 +26,15 @@ const bundler:Bundler = new soulWalletLib.Bundler(entryPointAddress, provider, b
 const slat = 0
 
 describe("SoulWalletContract", function () {
+    
+    async function estimateUserOperationGas(bundler: Bundler, userOp: UserOperation) {
+        const estimateData:any = await bundler.eth_estimateUserOperationGas(userOp);
+        if (toNumber(userOp.callGasLimit) === 0) {
+            userOp.callGasLimit = estimateData.callGasLimit;
+        }
+        userOp.preVerificationGas = estimateData.preVerificationGas;
+        userOp.verificationGasLimit = estimateData.verificationGas;
+    }
 
 
     async function deployFixture() {
@@ -68,8 +77,8 @@ describe("SoulWalletContract", function () {
             slat
         );
 
-
-        const requiredPrefund = await activateOp.requiredPrefund();
+        await estimateUserOperationGas(bundler, activateOp);
+        const requiredPrefund = await (await activateOp.requiredPrefund()).requiredPrefund;
         log('requiredPrefund: ', ethers.utils.formatEther(requiredPrefund));
 
         log('walletAddress: ' + walletAddress);
@@ -110,9 +119,9 @@ describe("SoulWalletContract", function () {
             1000000000,// 10Gwei
             slat
         );
+        await estimateUserOperationGas(bundler, activateOp);
 
-
-        const requiredPrefund = await activateOp.requiredPrefund();
+        const requiredPrefund = await (await activateOp.requiredPrefund()).requiredPrefund;
         log('requiredPrefund: ', ethers.utils.formatEther(requiredPrefund));
 
         // await walletOwner.sendTransaction({
@@ -184,19 +193,18 @@ describe("SoulWalletContract", function () {
         // });
 
         const sendETHOP = await soulWalletLib.Tokens.ETH.transfer(
-            provider,
             walletAddress,
             nonce,
-            entryPointAddress,
             '0x',
             10000000000,// 100Gwei
             1000000000,// 10Gwei
             accounts[1],
-            ethers.utils.parseEther('0.00011').toHexString()
+            ethers.utils.parseEther('0.00001').toHexString()
         );
         if (!sendETHOP) {
             throw new Error('setGuardianOP is null');
         }
+        await estimateUserOperationGas(bundler, sendETHOP);
         const sendETHOPuserOpHash = sendETHOP.getUserOpHashWithTimeRange(entryPointAddress, chainId, walletOwner.address);
         const sendETHOPSignature = Utils.signMessage(sendETHOPuserOpHash, walletOwner.privateKey)
         sendETHOP.signWithSignature(walletOwner.address, sendETHOPSignature);
